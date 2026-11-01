@@ -145,8 +145,12 @@
                     <span>แบบประเมิน</span>
                 </button>
                 <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="px-4 py-2 rounded-xl font-medium text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 text-bakery-600 hover:text-bakery-900">
-                    <i class="fa-solid fa-chart-pie"></i>
-                    <span>สรุปผลการประเมิน</span>
+                    <i id="admin-icon" class="fa-solid fa-lock text-amber-600"></i>
+                    <span id="tab-dashboard-text">สำหรับผู้ดูแลระบบ</span>
+                </button>
+                <button id="logout-admin-btn" onclick="logoutAdmin()" class="hidden px-3 py-2 rounded-xl font-medium text-xs sm:text-sm transition-all duration-300 flex items-center gap-1.5 text-red-700 bg-red-100 hover:bg-red-200">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>ออกจากระบบ</span>
                 </button>
             </nav>
         </div>
@@ -488,7 +492,7 @@
                 <div>
                     <h2 class="text-xl sm:text-2xl font-title font-bold text-bakery-900 flex items-center gap-2">
                         <i class="fa-solid fa-chart-line text-amber-500"></i>
-                        สรุปผลการประเมิน DEKAUAN
+                        สรุปผลการประเมิน DEKAUAN (Admin View)
                     </h2>
                     <p class="text-xs text-bakery-500 mt-0.5">
                         แสดงข้อมูลสถิติและแผนภูมิสรุปจากผู้ตอบแบบประเมินทั้งหมด (Real-Time)
@@ -502,6 +506,9 @@
                     </button>
                     <button type="button" onclick="confirmResetData()" class="px-4 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-rose-300 shadow-sm">
                         <i class="fa-solid fa-rotate-left"></i> ล้างข้อมูล (Reset)
+                    </button>
+                    <button type="button" onclick="logoutAdmin()" class="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-stone-400 shadow-sm">
+                        <i class="fa-solid fa-lock text-red-600"></i> ล็อกหน้าจอ (Exit Admin)
                     </button>
                 </div>
             </div>
@@ -651,6 +658,9 @@
     <!-- JavaScript Application Logic -->
     <script>
         const STORAGE_KEY = 'dekauan_survey_responses_v2';
+        const ADMIN_PIN = '1234'; // Default Admin Security PIN
+        let isAdminLoggedIn = false;
+
         let chartGenderInstance = null;
         let chartAgeInstance = null;
         let chartExpInstance = null;
@@ -676,8 +686,13 @@
             }
         });
 
-        // Tab Switching Function
+        // Tab Switching Function with Protection
         function switchTab(tabName) {
+            if (tabName === 'dashboard' && !isAdminLoggedIn) {
+                requestAdminAccess();
+                return;
+            }
+
             const surveyBtn = document.getElementById('tab-survey-btn');
             const dashboardBtn = document.getElementById('tab-dashboard-btn');
             const surveySec = document.getElementById('survey-section');
@@ -698,6 +713,93 @@
 
                 renderDashboard();
             }
+        }
+
+        // Admin Access Authentication Modal
+        function requestAdminAccess() {
+            if (isAdminLoggedIn) {
+                switchTab('dashboard');
+                return;
+            }
+
+            Swal.fire({
+                title: 'เข้าสู่ระบบผู้ดูแลระบบ 🔒',
+                text: 'กรุณากรอกรหัสผ่านเพื่อเข้าดูสรุปผลการประเมิน (รหัสเริ่มต้น: 1234)',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    placeholder: 'กรอกรหัสผ่าน (PIN)'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยันรหัสผ่าน 🔑',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#7A5437',
+                cancelButtonColor: '#9B7453',
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (result.value === ADMIN_PIN) {
+                        isAdminLoggedIn = true;
+                        updateAdminUI();
+                        switchTab('dashboard');
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ปลดล็อกสิทธิ์ Admin สำเร็จ! 🎉',
+                            text: 'ยินดีต้อนรับเข้าสู่แดชบอร์ดสรุปผลการประเมิน',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#FFFBF7',
+                            borderRadius: '24px'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'รหัสผ่านไม่ถูกต้อง! ❌',
+                            text: 'ไม่สามารถเข้าถึงหน้าสรุปผลได้ กรุณาตรวจสอบรหัสผ่านอีกครั้ง',
+                            confirmButtonColor: '#E53935',
+                            confirmButtonText: 'ตกลง',
+                            background: '#FFFBF7',
+                            borderRadius: '24px'
+                        });
+                    }
+                }
+            });
+        }
+
+        // Update Navigation UI based on Admin Auth State
+        function updateAdminUI() {
+            const adminIcon = document.getElementById('admin-icon');
+            const adminText = document.getElementById('tab-dashboard-text');
+            const logoutBtn = document.getElementById('logout-admin-btn');
+
+            if (isAdminLoggedIn) {
+                adminIcon.className = 'fa-solid fa-chart-pie text-emerald-600';
+                adminText.innerText = 'สรุปผล (Admin)';
+                logoutBtn.classList.remove('hidden');
+            } else {
+                adminIcon.className = 'fa-solid fa-lock text-amber-600';
+                adminText.innerText = 'สำหรับผู้ดูแลระบบ';
+                logoutBtn.classList.add('hidden');
+            }
+        }
+
+        // Admin Logout
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            updateAdminUI();
+            switchTab('survey');
+
+            Swal.fire({
+                icon: 'info',
+                title: 'ออกจากระบบแล้ว 🔒',
+                text: 'สลับกลับสู่หน้าแบบประเมินสำหรับผู้ตอบทั่วไปเรียบร้อย',
+                timer: 1500,
+                showConfirmButton: false,
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            });
         }
 
         // Form Submission Handler
@@ -730,18 +832,18 @@
                 });
             }
 
-            // Beautiful SweetAlert Popup
+            // Beautiful SweetAlert Popup - keeps public users on survey view
             Swal.fire({
                 title: 'ขอบคุณสำหรับข้อมูล!',
                 text: 'เราได้รับข้อมูลการประเมินแบรนด์ DEKAUAN ของคุณเรียบร้อยแล้ว 🍰',
                 icon: 'success',
-                confirmButtonText: 'ดูผลการประเมินทั้งหมด 📊',
+                confirmButtonText: 'เสร็จสิ้น 💖',
                 confirmButtonColor: '#7A5437',
                 background: '#FFFBF7',
                 borderRadius: '24px'
             }).then(() => {
                 form.reset();
-                switchTab('dashboard');
+                switchTab('survey');
             });
         }
 
