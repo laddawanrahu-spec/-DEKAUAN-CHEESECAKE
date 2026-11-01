@@ -1,677 +1,1233 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DEKAUAN - แบบประเมินความพึงพอใจ</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Prompt -->
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Prompt', 'sans-serif'],
-          },
-          colors: {
-            cream: {
-              50: '#FFFDF9',
-              100: '#FFF8EE',
-              200: '#FDF0DB',
-              300: '#F9E2BE',
-            },
-            choco: {
-              600: '#6C3B2A',
-              700: '#522B1E',
-              800: '#3D1E14',
-            },
-            gold: {
-              400: '#F4B042',
-              500: '#E59B28',
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบประเมินความอร่อย ร้าน DEKAUAN - Cheesecake Cup</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Mitr & Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- SweetAlert2 CDN for beautiful non-native popups -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bakery: {
+                            50: '#FAF5EF',
+                            100: '#F4EBE1',
+                            200: '#E7D6C5',
+                            300: '#D5BFA8',
+                            400: '#BFA082',
+                            500: '#9B7453',
+                            600: '#7A5437',
+                            700: '#5C381E',
+                            800: '#432612',
+                            900: '#2A160A',
+                            cheese: '#F4B740',
+                            gold: '#E5A233',
+                            cream: '#FFFBF7',
+                            berry: '#C2185B',
+                            strawberry: '#E53935',
+                            choco: '#4E342E',
+                            oreo: '#263238'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                        title: ['Mitr', 'sans-serif']
+                    }
+                }
             }
-          }
         }
-      }
-    }
-  </script>
-  <style>
-    body {
-      background-color: #FFFDF9;
-      background-image: radial-gradient(#F9E2BE 0.75px, transparent 0.75px);
-      background-size: 16px 16px;
-    }
-    .custom-shadow {
-      box-shadow: 0 10px 25px -5px rgba(108, 59, 42, 0.08), 0 8px 10px -6px rgba(108, 59, 42, 0.04);
-    }
-    .radio-card:checked + label {
-      border-color: #6C3B2A;
-      background-color: #FFF8EE;
-      box-shadow: 0 4px 12px rgba(108, 59, 42, 0.12);
-    }
-    .radio-card:checked + label .check-icon {
-      display: flex;
-    }
-  </style>
+    </script>
+    <style>
+        body {
+            background-color: #FAF5EF;
+            background-image: radial-gradient(#E7D6C5 0.8px, transparent 0.8px);
+            background-size: 20px 20px;
+        }
+
+        .bakery-card {
+            background: rgba(255, 251, 247, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #E7D6C5;
+            box-shadow: 0 12px 30px -10px rgba(67, 38, 18, 0.08), 0 4px 12px -2px rgba(67, 38, 18, 0.03);
+        }
+
+        .radio-card:checked + label {
+            border-color: #7A5437;
+            background-color: #F4EBE1;
+            box-shadow: 0 6px 16px -4px rgba(122, 84, 55, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .radio-card:checked + label .check-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .tab-active {
+            background-color: #7A5437 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(122, 84, 55, 0.3);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF5EF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D5BFA8;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7A5437;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #9B7453 0%, #5C381E 100%);
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #7A5437 0%, #432612 100%);
+        }
+    </style>
 </head>
-<body class="font-sans text-choco-800 min-h-screen flex flex-col justify-between pb-10">
+<body class="text-bakery-800 min-h-screen flex flex-col justify-between selection:bg-bakery-200 selection:text-bakery-900 font-sans">
 
-  <!-- Header -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-cream-200 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <!-- Logo DEKAUAN -->
-        <div class="w-12 h-12 rounded-full bg-cream-100 border-2 border-dashed border-choco-600 flex items-center justify-center shadow-inner relative overflow-hidden">
-          <svg viewBox="0 0 100 100" class="w-10 h-10">
-            <circle cx="50" cy="50" r="46" fill="#FFF8EE" stroke="#6C3B2A" stroke-width="1.5" stroke-dasharray="3,2"/>
-            <path d="M44,28 C44,20 48,16 50,22 C52,16 56,20 56,28 C56,33 50,37 50,37 C50,37 44,33 44,28 Z" fill="none" stroke="#6C3B2A" stroke-width="2"/>
-            <path d="M47,26 C47,22 49,19 50,23 C51,19 53,22 53,26" fill="none" stroke="#6C3B2A" stroke-width="1.5"/>
-            <line x1="50" y1="37" x2="50" y2="44" stroke="#6C3B2A" stroke-width="2"/>
-            <path d="M 22 55 Q 50 43 78 55" fill="none" stroke="#6C3B2A" stroke-width="2.5" stroke-linecap="round"/>
-            <text x="50" y="58" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="700" font-size="15" fill="#6C3B2A">DEKAUAN</text>
-            <text x="50" y="66" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="500" font-size="5" fill="#6C3B2A" letter-spacing="0.5">— CHEESECAKE CUP —</text>
-            <path d="M 40 68 Q 45 74 50 69 Q 55 75 60 68" fill="none" stroke="#F4B042" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h1 class="font-bold text-lg leading-tight text-choco-700">DEKAUAN</h1>
-          <p class="text-xs text-choco-600 font-medium">Cheesecake Cup Survey</p>
-        </div>
-      </div>
-
-      <!-- Auth Controller Button -->
-      <div>
-        <button id="btn-admin-toggle" onclick="handleAdminToggle()" class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-choco-700 border border-cream-300 transition-all flex items-center gap-1.5 shadow-sm">
-          <span>🔑</span>
-          <span id="admin-btn-text">เข้าสู่ระบบ Admin</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Navigation Tabs (Visible only when logged in as Admin) -->
-  <div id="admin-nav-bar" class="hidden bg-cream-100 border-b border-cream-200 py-2">
-    <div class="max-w-4xl mx-auto px-4 flex justify-center gap-2">
-      <button id="tab-btn-survey" onclick="switchTab('survey')" class="px-4 py-1.5 rounded-lg text-sm font-semibold transition-all bg-choco-600 text-white shadow-sm">
-        📝 หน้าแบบประเมิน
-      </button>
-      <button id="tab-btn-dashboard" onclick="switchTab('dashboard')" class="px-4 py-1.5 rounded-lg text-sm font-semibold transition-all text-choco-700 hover:bg-cream-200">
-        📊 สรุปผลการประเมิน
-      </button>
-    </div>
-  </div>
-
-  <!-- Main Content Container -->
-  <main class="max-w-3xl mx-auto px-4 py-6 flex-grow w-full">
-
-    <!-- ==================== SECTION: SURVEY FORM ==================== -->
-    <section id="section-survey" class="space-y-6">
-      
-      <!-- Banner / Welcome Card -->
-      <div class="bg-gradient-to-r from-cream-200 to-cream-100 rounded-3xl p-6 border border-cream-300 text-center relative overflow-hidden custom-shadow">
-        <div class="relative z-10">
-          <div class="w-20 h-20 mx-auto mb-3 rounded-full bg-white p-2 shadow-md border border-cream-200 flex items-center justify-center">
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-              <circle cx="50" cy="50" r="46" fill="#FFF8EE" stroke="#6C3B2A" stroke-width="1.5" stroke-dasharray="3,2"/>
-              <path d="M44,28 C44,20 48,16 50,22 C52,16 56,20 56,28 C56,33 50,37 50,37 C50,37 44,33 44,28 Z" fill="none" stroke="#6C3B2A" stroke-width="2"/>
-              <path d="M47,26 C47,22 49,19 50,23 C51,19 53,22 53,26" fill="none" stroke="#6C3B2A" stroke-width="1.5"/>
-              <line x1="50" y1="37" x2="50" y2="44" stroke="#6C3B2A" stroke-width="2"/>
-              <path d="M 22 55 Q 50 43 78 55" fill="none" stroke="#6C3B2A" stroke-width="2.5" stroke-linecap="round"/>
-              <text x="50" y="58" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="700" font-size="15" fill="#6C3B2A">DEKAUAN</text>
-              <text x="50" y="66" text-anchor="middle" font-family="'Prompt', sans-serif" font-weight="500" font-size="5" fill="#6C3B2A" letter-spacing="0.5">— CHEESECAKE CUP —</text>
-              <path d="M 40 68 Q 45 74 50 69 Q 55 75 60 68" fill="none" stroke="#F4B042" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold text-choco-700">แบบประเมินความพึงพอใจ</h2>
-          <p class="text-sm text-choco-600 mt-1">ขอเชิญร่วมตอบแบบประเมินเพื่อพัฒนารสชาติและบริการของแบรนด์ DEKAUAN 🍰✨</p>
-        </div>
-      </div>
-
-      <!-- Survey Form -->
-      <form id="surveyForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
-
-        <!-- ส่วนที่ 1: ข้อมูลทั่วไป -->
-        <div class="bg-white rounded-3xl p-6 border border-cream-200 custom-shadow space-y-5">
-          <div class="border-b border-cream-200 pb-3 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-cream-200 text-choco-700 font-bold text-sm flex items-center justify-center">1</span>
-            <h3 class="text-lg font-bold text-choco-700">ข้อมูลทั่วไป</h3>
-          </div>
-
-          <!-- ข้อ 1.1: เพศ -->
-          <div>
-            <label class="block text-sm font-semibold text-choco-800 mb-2.5">เพศ <span class="text-red-500">*</span></label>
-            <div class="grid grid-cols-3 gap-3">
-              <div>
-                <input type="radio" id="gender-male" name="gender" value="ชาย" class="hidden radio-card" required>
-                <label for="gender-male" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xl mb-1">👨</span>
-                  <span class="text-xs font-medium text-choco-700">ชาย</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="gender-female" name="gender" value="หญิง" class="hidden radio-card">
-                <label for="gender-female" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xl mb-1">👩</span>
-                  <span class="text-xs font-medium text-choco-700">หญิง</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="gender-none" name="gender" value="ไม่ประสงค์ระบุ" class="hidden radio-card">
-                <label for="gender-none" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xl mb-1">✨</span>
-                  <span class="text-xs font-medium text-choco-700">ไม่ประสงค์ระบุ</span>
-                </label>
-              </div>
+    <!-- Top Navigation Header -->
+    <header class="w-full bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-bakery-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            
+            <!-- Brand Logo Header Section -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('survey')">
+                <div class="w-10 h-10 rounded-full bg-bakery-100 border border-dashed border-bakery-400 flex items-center justify-center p-0.5 shadow-sm">
+                    <!-- Inline Mini SVG Logo -->
+                    <svg viewBox="0 0 300 300" class="w-full h-full">
+                        <circle cx="150" cy="150" r="140" fill="#FAF5EF" stroke="#E7D6C5" stroke-width="4"/>
+                        <circle cx="150" cy="150" r="126" fill="none" stroke="#BFA082" stroke-width="3" stroke-dasharray="6 4"/>
+                        <path d="M150 90 Q 158 60, 175 75 Q 190 90, 170 120 Z" fill="none" stroke="#432612" stroke-width="6"/>
+                        <path d="M150 90 Q 142 60, 125 75 Q 110 90, 130 120 Z" fill="none" stroke="#432612" stroke-width="6"/>
+                        <text x="150" y="165" font-family="'Mitr', sans-serif" font-weight="700" font-size="34" fill="#432612" text-anchor="middle">DEKAUAN</text>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-title text-lg font-bold leading-none text-bakery-800 tracking-wide">DEKAUAN</h1>
+                    <span class="text-[10px] font-semibold text-bakery-500 uppercase tracking-wider">Cheesecake Cup</span>
+                </div>
             </div>
-          </div>
 
-          <!-- ข้อ 1.2: อายุ -->
-          <div>
-            <label class="block text-sm font-semibold text-choco-800 mb-2.5">อายุ <span class="text-red-500">*</span></label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div>
-                <input type="radio" id="age-1" name="age" value="ต่ำกว่า 15 ปี" class="hidden radio-card" required>
-                <label for="age-1" class="flex items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xs font-medium text-choco-700">ต่ำกว่า 15 ปี</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="age-2" name="age" value="15–18 ปี" class="hidden radio-card">
-                <label for="age-2" class="flex items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xs font-medium text-choco-700">15–18 ปี</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="age-3" name="age" value="19–22 ปี" class="hidden radio-card">
-                <label for="age-3" class="flex items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xs font-medium text-choco-700">19–22 ปี</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="age-4" name="age" value="23 ปีขึ้นไป" class="hidden radio-card">
-                <label for="age-4" class="flex items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full">
-                  <span class="text-xs font-medium text-choco-700">23 ปีขึ้นไป</span>
-                </label>
-              </div>
+            <!-- Tab Buttons Navigation -->
+            <nav class="flex bg-bakery-100/80 p-1.5 rounded-2xl border border-bakery-200">
+                <button id="tab-survey-btn" onclick="switchTab('survey')" class="tab-active px-4 py-2 rounded-xl font-medium text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 text-bakery-600">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>แบบประเมิน</span>
+                </button>
+                <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="px-4 py-2 rounded-xl font-medium text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 text-bakery-600 hover:text-bakery-900">
+                    <i id="admin-icon" class="fa-solid fa-lock text-amber-600"></i>
+                    <span id="tab-dashboard-text">สำหรับผู้ดูแลระบบ</span>
+                </button>
+                <button id="logout-admin-btn" onclick="logoutAdmin()" class="hidden px-3 py-2 rounded-xl font-medium text-xs sm:text-sm transition-all duration-300 flex items-center gap-1.5 text-red-700 bg-red-100 hover:bg-red-200">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>ออกจากระบบ</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl w-full mx-auto px-4 py-6 flex-grow">
+
+        <!-- ==================== TAB 1: SURVEY FORM ==================== -->
+        <div id="survey-section" class="space-y-6">
+
+            <!-- Hero Banner Card with EXACT Reproduction Vector Logo -->
+            <div class="bakery-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-bakery-200">
+                <div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none text-bakery-700">
+                    <i class="fa-solid fa-cheese text-[180px]"></i>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative z-10">
+                    
+                    <!-- SVG LOGO EXACT REPRODUCTION FROM IMAGE -->
+                    <div class="w-44 h-44 sm:w-48 sm:h-48 shrink-0 drop-shadow-md">
+                        <svg viewBox="0 0 300 300" class="w-full h-full">
+                            <!-- Outer cream badge circle -->
+                            <circle cx="150" cy="150" r="142" fill="#FAF4EB" stroke="#F0E2D2" stroke-width="4"/>
+                            
+                            <!-- Dashed inner border line -->
+                            <circle cx="150" cy="150" r="128" fill="none" stroke="#D3BCA6" stroke-width="3" stroke-dasharray="8 5"/>
+                            
+                            <!-- Top Whisk (ตะกร้อมือ) Icon with Heart Loops -->
+                            <g transform="translate(150, 92)">
+                                <!-- Whisk handle base -->
+                                <rect x="-5" y="32" width="10" height="10" fill="#5C3613" rx="2"/>
+                                <!-- Central Stem -->
+                                <line x1="0" y1="32" x2="0" y2="-5" stroke="#5C3613" stroke-width="3"/>
+                                
+                                <!-- Outer Heart Loop Right -->
+                                <path d="M 0 30 C 25 15, 42 -10, 22 -28 C 5 -42, -5 -10, 0 30 Z" fill="none" stroke="#5C3613" stroke-width="4.5" stroke-linecap="round"/>
+                                
+                                <!-- Outer Heart Loop Left -->
+                                <path d="M 0 30 C -25 15, -42 -10, -22 -28 C -5 -42, 5 -10, 0 30 Z" fill="none" stroke="#5C3613" stroke-width="4.5" stroke-linecap="round"/>
+                                
+                                <!-- Inner Wire Loop -->
+                                <path d="M 0 30 C 14 10, 20 -15, 0 -32 C -20 -15, -14 10, 0 30 Z" fill="none" stroke="#5C3613" stroke-width="3.5"/>
+                            </g>
+                            
+                            <!-- Floating Heart over the letter E -->
+                            <path d="M 103 125 C 103 120, 97 116, 92 121 C 87 116, 81 120, 81 125 C 81 131, 92 137, 92 137 C 92 137, 103 131, 103 125 Z" fill="#5C3613"/>
+                            
+                            <!-- Main Brand Text: DEKAUAN -->
+                            <text x="150" y="165" font-family="'Mitr', 'Prompt', sans-serif" font-weight="700" font-size="44" fill="#432612" text-anchor="middle" letter-spacing="0.5">DEKAUAN</text>
+                            
+                            <!-- Subtitle Text: — CHEESECAKE CUP — -->
+                            <g transform="translate(150, 185)">
+                                <line x1="-105" y1="-5" x2="-85" y2="-5" stroke="#432612" stroke-width="2.5"/>
+                                <text x="0" y="0" font-family="'Prompt', sans-serif" font-weight="600" font-size="13" fill="#432612" text-anchor="middle" letter-spacing="2">CHEESECAKE CUP</text>
+                                <line x1="85" y1="-5" x2="105" y2="-5" stroke="#432612" stroke-width="2.5"/>
+                            </g>
+
+                            <!-- Bottom Cheese Drip Graphic -->
+                            <path d="M 90 200 Q 120 196, 150 205 Q 165 228, 172 210 Q 185 200, 210 200 C 200 215, 175 230, 158 212 C 148 238, 138 215, 90 200 Z" fill="#EAA83B" stroke="#432612" stroke-width="1.5"/>
+                            <!-- Drip highlight -->
+                            <circle cx="155" cy="216" r="2.5" fill="#FFF8EB"/>
+                        </svg>
+                    </div>
+
+                    <div class="space-y-3 text-center md:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-amber-100 text-bakery-700 text-xs font-semibold rounded-full border border-amber-200">
+                            <i class="fa-solid fa-star text-amber-500"></i> แบบสำรวจความพึงพอใจและรสชาติ
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-title font-bold text-bakery-900 leading-tight">
+                            แบบประเมินความอร่อย ร้าน DEKAUAN 🍰
+                        </h2>
+                        <p class="text-xs sm:text-sm text-bakery-600 leading-relaxed max-w-lg">
+                            ขอเชิญร่วมตอบแบบประเมินชีสเค้กคัพแบรนด์ <strong class="text-bakery-800">DEKAUAN</strong> เพื่อให้เราพัฒนาชีสพายรสชาติอร่อย เข้มข้น และตรงใจคุณมากที่สุด
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <!-- ข้อ 1.3: ประสบการณ์ -->
-          <div>
-            <label class="block text-sm font-semibold text-choco-800 mb-2.5">คุณเคยรับประทานชีสพายหรือไม่ <span class="text-red-500">*</span></label>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <input type="radio" id="exp-yes" name="experience" value="เคย" class="hidden radio-card" required>
-                <label for="exp-yes" class="flex items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full gap-2">
-                  <span>😋</span>
-                  <span class="text-xs font-medium text-choco-700">เคย</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="exp-no" name="experience" value="ไม่เคย" class="hidden radio-card">
-                <label for="exp-no" class="flex items-center justify-center p-3 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all text-center h-full gap-2">
-                  <span>😮</span>
-                  <span class="text-xs font-medium text-choco-700">ไม่เคย</span>
-                </label>
-              </div>
+            <!-- Survey Form -->
+            <form id="survey-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+
+                <!-- SECTION 1: General Info -->
+                <div class="bakery-card rounded-3xl p-6 sm:p-8 border border-bakery-200 space-y-6">
+                    <div class="border-b border-bakery-200 pb-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-2xl bg-bakery-600 text-white flex items-center justify-center font-title font-bold text-base shadow-sm">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="font-title text-lg font-bold text-bakery-900">ส่วนที่ 1: ข้อมูลทั่วไป</h3>
+                                <p class="text-xs text-bakery-500">กรุณาเลือกข้อมูลของคุณผู้ตอบแบบประเมิน</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-red-500 font-medium">* จำเป็นต้องตอบ</span>
+                    </div>
+
+                    <!-- Question 1.1: Gender -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-bakery-800">
+                            1. เพศ <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <input type="radio" id="gender-male" name="gender" value="ชาย" class="hidden radio-card" required>
+                                <label for="gender-male" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all duration-200">
+                                    <span class="flex items-center gap-3 text-sm font-medium text-bakery-800">
+                                        <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-sm">
+                                            <i class="fa-solid fa-mars"></i>
+                                        </div>
+                                        ชาย
+                                    </span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+
+                            <div>
+                                <input type="radio" id="gender-female" name="gender" value="หญิง" class="hidden radio-card">
+                                <label for="gender-female" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all duration-200">
+                                    <span class="flex items-center gap-3 text-sm font-medium text-bakery-800">
+                                        <div class="w-8 h-8 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-sm">
+                                            <i class="fa-solid fa-venus"></i>
+                                        </div>
+                                        หญิง
+                                    </span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+
+                            <div>
+                                <input type="radio" id="gender-none" name="gender" value="ไม่ประสงค์ระบุ" class="hidden radio-card">
+                                <label for="gender-none" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all duration-200">
+                                    <span class="flex items-center gap-3 text-sm font-medium text-bakery-800">
+                                        <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-sm">
+                                            <i class="fa-solid fa-user-slash"></i>
+                                        </div>
+                                        ไม่ประสงค์ระบุ
+                                    </span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 1.2: Age -->
+                    <div class="space-y-3 pt-2">
+                        <label class="block text-sm font-semibold text-bakery-800">
+                            2. อายุ <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div>
+                                <input type="radio" id="age-1" name="age" value="ต่ำกว่า 15 ปี" class="hidden radio-card" required>
+                                <label for="age-1" class="flex items-center justify-between p-3.5 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all text-center">
+                                    <span class="text-xs sm:text-sm font-medium text-bakery-800 w-full text-left">ต่ำกว่า 15 ปี</span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="age-2" name="age" value="15–18 ปี" class="hidden radio-card">
+                                <label for="age-2" class="flex items-center justify-between p-3.5 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all">
+                                    <span class="text-xs sm:text-sm font-medium text-bakery-800 w-full text-left">15–18 ปี</span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="age-3" name="age" value="19–22 ปี" class="hidden radio-card">
+                                <label for="age-3" class="flex items-center justify-between p-3.5 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all">
+                                    <span class="text-xs sm:text-sm font-medium text-bakery-800 w-full text-left">19–22 ปี</span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="age-4" name="age" value="23 ปีขึ้นไป" class="hidden radio-card">
+                                <label for="age-4" class="flex items-center justify-between p-3.5 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all">
+                                    <span class="text-xs sm:text-sm font-medium text-bakery-800 w-full text-left">23 ปีขึ้นไป</span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 1.3: History -->
+                    <div class="space-y-3 pt-2">
+                        <label class="block text-sm font-semibold text-bakery-800">
+                            3. คุณเคยรับประทานชีสพายหรือไม่ <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <input type="radio" id="exp-yes" name="experience" value="เคย" class="hidden radio-card" required>
+                                <label for="exp-yes" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all">
+                                    <span class="flex items-center gap-3 text-sm font-medium text-bakery-800">
+                                        <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </div>
+                                        เคยรับประทาน
+                                    </span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="radio" id="exp-no" name="experience" value="ไม่เคย" class="hidden radio-card">
+                                <label for="exp-no" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-bakery-100/50 cursor-pointer transition-all">
+                                    <span class="flex items-center gap-3 text-sm font-medium text-bakery-800">
+                                        <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-sm">
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                        </div>
+                                        ไม่เคยรับประทาน
+                                    </span>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SECTION 2: Taste Preference -->
+                <div class="bakery-card rounded-3xl p-6 sm:p-8 border border-bakery-200 space-y-6">
+                    <div class="border-b border-bakery-200 pb-4 flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-2xl bg-bakery-600 text-white flex items-center justify-center font-title font-bold text-base shadow-sm">
+                            2
+                        </div>
+                        <div>
+                            <h3 class="font-title text-lg font-bold text-bakery-900">ส่วนที่ 2: ความชื่นชอบในรสชาติ</h3>
+                            <p class="text-xs text-bakery-500">ประเมินระดับความพึงพอใจและเลือกเมนูชีสพายที่คุณสนใจ</p>
+                        </div>
+                    </div>
+
+                    <!-- Question 2.1: Taste Satisfaction Rating (1-5) -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-sm font-semibold text-bakery-800">
+                                1. คุณพึงพอใจในรสชาติมากแค่ไหน? <span class="text-red-500">*</span>
+                            </label>
+                        </div>
+                        <p class="text-xs text-bakery-500">ให้คะแนน 1 - 5 (1 = น้อยที่สุด, 5 = มากที่สุด)</p>
+                        
+                        <div class="grid grid-cols-5 gap-2 sm:gap-3 pt-1">
+                            <!-- Score 1 -->
+                            <div>
+                                <input type="radio" id="score-1" name="satisfaction_score" value="1" class="hidden radio-card" required>
+                                <label for="score-1" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-red-50/50 cursor-pointer transition-all text-center group">
+                                    <span class="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform">😡</span>
+                                    <span class="text-xs font-bold text-bakery-700">1</span>
+                                </label>
+                            </div>
+                            <!-- Score 2 -->
+                            <div>
+                                <input type="radio" id="score-2" name="satisfaction_score" value="2" class="hidden radio-card">
+                                <label for="score-2" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-orange-50/50 cursor-pointer transition-all text-center group">
+                                    <span class="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform">😕</span>
+                                    <span class="text-xs font-bold text-bakery-700">2</span>
+                                </label>
+                            </div>
+                            <!-- Score 3 -->
+                            <div>
+                                <input type="radio" id="score-3" name="satisfaction_score" value="3" class="hidden radio-card">
+                                <label for="score-3" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-yellow-50/50 cursor-pointer transition-all text-center group">
+                                    <span class="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform">😐</span>
+                                    <span class="text-xs font-bold text-bakery-700">3</span>
+                                </label>
+                            </div>
+                            <!-- Score 4 -->
+                            <div>
+                                <input type="radio" id="score-4" name="satisfaction_score" value="4" class="hidden radio-card">
+                                <label for="score-4" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-lime-50/50 cursor-pointer transition-all text-center group">
+                                    <span class="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform">🙂</span>
+                                    <span class="text-xs font-bold text-bakery-700">4</span>
+                                </label>
+                            </div>
+                            <!-- Score 5 -->
+                            <div>
+                                <input type="radio" id="score-5" name="satisfaction_score" value="5" class="hidden radio-card">
+                                <label for="score-5" class="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl border border-bakery-200 bg-white/70 hover:bg-emerald-50/50 cursor-pointer transition-all text-center group">
+                                    <span class="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform">😍</span>
+                                    <span class="text-xs font-bold text-bakery-700">5</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2.2: Favorite Flavor -->
+                    <div class="space-y-3 pt-2">
+                        <label class="block text-sm font-semibold text-bakery-800">
+                            2. คุณสนใจชีสพายรสชาติใดมากที่สุด <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                            <!-- Blueberry -->
+                            <div>
+                                <input type="radio" id="flavor-blueberry" name="favorite_flavor" value="บลูเบอร์รี่ชีสพาย 🫐" class="hidden radio-card" required>
+                                <label for="flavor-blueberry" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-gradient-to-r from-pink-50/40 via-purple-50/40 to-white hover:border-purple-300 cursor-pointer transition-all group">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                                            🫐
+                                        </div>
+                                        <div>
+                                            <div class="font-title font-semibold text-bakery-900 text-sm">บลูเบอร์รี่ชีสพาย</div>
+                                            <div class="text-[11px] text-purple-600 font-medium">Blueberry Cheese Pie</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge text-lg"></i>
+                                </label>
+                            </div>
+
+                            <!-- Strawberry -->
+                            <div>
+                                <input type="radio" id="flavor-strawberry" name="favorite_flavor" value="สตรอว์เบอร์รี่ชีสพาย 🍓" class="hidden radio-card">
+                                <label for="flavor-strawberry" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-gradient-to-r from-red-50/40 via-rose-50/40 to-white hover:border-red-300 cursor-pointer transition-all group">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                                            🍓
+                                        </div>
+                                        <div>
+                                            <div class="font-title font-semibold text-bakery-900 text-sm">สตรอว์เบอร์รี่ชีสพาย</div>
+                                            <div class="text-[11px] text-red-500 font-medium">Strawberry Cheese Pie</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge text-lg"></i>
+                                </label>
+                            </div>
+
+                            <!-- Chocolate -->
+                            <div>
+                                <input type="radio" id="flavor-chocolate" name="favorite_flavor" value="ช็อกโกแลตชีสพาย 🍫" class="hidden radio-card">
+                                <label for="flavor-chocolate" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-gradient-to-r from-amber-50/40 via-orange-50/40 to-white hover:border-amber-400 cursor-pointer transition-all group">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                                            🍫
+                                        </div>
+                                        <div>
+                                            <div class="font-title font-semibold text-bakery-900 text-sm">ช็อกโกแลตชีสพาย</div>
+                                            <div class="text-[11px] text-amber-800 font-medium">Chocolate Cheese Pie</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge text-lg"></i>
+                                </label>
+                            </div>
+
+                            <!-- Oreo -->
+                            <div>
+                                <input type="radio" id="flavor-oreo" name="favorite_flavor" value="โอริโอ้ชีสพาย 🍪" class="hidden radio-card">
+                                <label for="flavor-oreo" class="flex items-center justify-between p-4 rounded-2xl border border-bakery-200 bg-gradient-to-r from-stone-100/40 via-zinc-100/40 to-white hover:border-stone-400 cursor-pointer transition-all group">
+                                    <div class="flex items-center gap-3.5">
+                                        <div class="w-12 h-12 rounded-2xl bg-stone-200 text-stone-800 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                                            🍪
+                                        </div>
+                                        <div>
+                                            <div class="font-title font-semibold text-bakery-900 text-sm">โอริโอ้ชีสพาย</div>
+                                            <div class="text-[11px] text-stone-600 font-medium">Oreo Cheese Pie</div>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-circle-check text-bakery-600 opacity-0 transform scale-50 transition-all duration-200 check-badge text-lg"></i>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Question 2.3: Optional New Flavors -->
+                    <div class="space-y-2 pt-2">
+                        <div class="flex items-center justify-between">
+                            <label for="new_flavor_suggestion" class="block text-sm font-semibold text-bakery-800">
+                                3. คุณอยากให้เราเพิ่มรสชาติเพิ่มไหม แล้วเป็นรสชาติอะไร
+                            </label>
+                            <span class="text-[11px] font-medium text-bakery-500 bg-bakery-100 px-2.5 py-0.5 rounded-full border border-bakery-200">ไม่บังคับตอบ (Optional)</span>
+                        </div>
+                        <textarea id="new_flavor_suggestion" name="new_flavor_suggestion" rows="3" placeholder="เขียนเสนอแนะรสชาติที่คุณอยากทาน เช่น ชาเขียวมัทฉะ 🍵, คาราเมลแมคคาเดเมีย, มะม่วงน้ำดอกไม้ 🥭..." class="w-full rounded-2xl border border-bakery-200 bg-white/80 p-4 text-sm text-bakery-900 focus:outline-none focus:ring-2 focus:ring-bakery-500 focus:bg-white transition-all placeholder:text-bakery-300 resize-none shadow-inner"></textarea>
+                    </div>
+
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2 text-center">
+                    <button type="submit" class="w-full sm:w-auto px-12 py-4 btn-gradient text-white font-title font-semibold text-lg rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 flex items-center justify-center gap-3 mx-auto">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>ส่งแบบประเมิน DEKAUAN</span>
+                    </button>
+                    <p class="text-xs text-bakery-500 mt-3 font-light">
+                        ความเห็นของคุณจะช่วยให้เราสร้างสรรค์ชีสเค้กคัพที่อร่อยยิ่งขึ้น ขอบคุณครับ ✨
+                    </p>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- ==================== TAB 2: DASHBOARD / RESULTS ==================== -->
+        <div id="dashboard-section" class="space-y-6 hidden">
+
+            <!-- Dashboard Toolbar Header -->
+            <div class="bakery-card rounded-3xl p-6 border border-bakery-200 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-title font-bold text-bakery-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-amber-500"></i>
+                        สรุปผลการประเมิน DEKAUAN (Admin View)
+                    </h2>
+                    <p class="text-xs text-bakery-500 mt-0.5">
+                        แสดงข้อมูลสถิติและแผนภูมิสรุปจากผู้ตอบแบบประเมินทั้งหมด (Real-Time)
+                    </p>
+                </div>
+
+                <!-- Action Controls (Fixed & Guaranteed Working Reset) -->
+                <div class="flex flex-wrap gap-2.5 w-full md:w-auto justify-end">
+                    <button type="button" onclick="loadDemoData()" class="px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-amber-300 shadow-sm">
+                        <i class="fa-solid fa-box-archive"></i> จำลองข้อมูลตัวอย่าง
+                    </button>
+                    <button type="button" onclick="confirmResetData()" class="px-4 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-rose-300 shadow-sm">
+                        <i class="fa-solid fa-rotate-left"></i> ล้างข้อมูล (Reset)
+                    </button>
+                    <button type="button" onclick="logoutAdmin()" class="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border border-stone-400 shadow-sm">
+                        <i class="fa-solid fa-lock text-red-600"></i> ล็อกหน้าจอ (Exit Admin)
+                    </button>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <!-- ส่วนที่ 2: ความชื่นชอบในรสชาติ -->
-        <div class="bg-white rounded-3xl p-6 border border-cream-200 custom-shadow space-y-5">
-          <div class="border-b border-cream-200 pb-3 flex items-center gap-2">
-            <span class="w-7 h-7 rounded-full bg-cream-200 text-choco-700 font-bold text-sm flex items-center justify-center">2</span>
-            <h3 class="text-lg font-bold text-choco-700">ความชื่นชอบในรสชาติ</h3>
-          </div>
+            <!-- Key Metrics KPI Cards Grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                <!-- KPI 1 -->
+                <div class="bakery-card p-4 sm:p-5 rounded-3xl border border-bakery-200 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-bakery-100 text-bakery-700 flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-bakery-500 font-medium">จำนวนผู้ตอบทั้งหมด</div>
+                        <div id="stat-total" class="text-xl sm:text-2xl font-title font-bold text-bakery-900">0</div>
+                    </div>
+                </div>
 
-          <!-- ข้อ 2.1: รสชาติที่สนใจ -->
-          <div>
-            <label class="block text-sm font-semibold text-choco-800 mb-2.5">คุณสนใจชีสพายรสชาติใดมากที่สุด <span class="text-red-500">*</span></label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <input type="radio" id="flavor-bb" name="flavor" value="บลูเบอร์รี่ชีสพาย 🫐" class="hidden radio-card" required>
-                <label for="flavor-bb" class="flex items-center p-3.5 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all gap-3">
-                  <span class="text-2xl">🫐</span>
-                  <span class="text-xs font-semibold text-choco-700">บลูเบอร์รี่ชีสพาย</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="flavor-sb" name="flavor" value="สตรอว์เบอร์รี่ชีสพาย 🍓" class="hidden radio-card">
-                <label for="flavor-sb" class="flex items-center p-3.5 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all gap-3">
-                  <span class="text-2xl">🍓</span>
-                  <span class="text-xs font-semibold text-choco-700">สตรอว์เบอร์รี่ชีสพาย</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="flavor-choco" name="flavor" value="ช็อกโกแลตชีสพาย 🍫" class="hidden radio-card">
-                <label for="flavor-choco" class="flex items-center p-3.5 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all gap-3">
-                  <span class="text-2xl">🍫</span>
-                  <span class="text-xs font-semibold text-choco-700">ช็อกโกแลตชีสพาย</span>
-                </label>
-              </div>
-              <div>
-                <input type="radio" id="flavor-oreo" name="flavor" value="โอริโอ้ชีสพาย 🍪" class="hidden radio-card">
-                <label for="flavor-oreo" class="flex items-center p-3.5 rounded-2xl border-2 border-cream-200 bg-white cursor-pointer hover:border-cream-300 transition-all gap-3">
-                  <span class="text-2xl">🍪</span>
-                  <span class="text-xs font-semibold text-choco-700">โอริโอ้ชีสพาย</span>
-                </label>
-              </div>
+                <!-- KPI 2: Average Score -->
+                <div class="bakery-card p-4 sm:p-5 rounded-3xl border border-bakery-200 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-bakery-500 font-medium">ความพึงพอใจเฉลี่ย</div>
+                        <div id="stat-avg-score" class="text-xl sm:text-2xl font-title font-bold text-bakery-900">0.0 / 5</div>
+                    </div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="bakery-card p-4 sm:p-5 rounded-3xl border border-bakery-200 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-bakery-500 font-medium">รสชาติยอดนิยมอันดับ 1</div>
+                        <div id="stat-top-flavor" class="text-xs sm:text-sm font-title font-bold text-bakery-900 truncate max-w-[110px]">-</div>
+                    </div>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="bakery-card p-4 sm:p-5 rounded-3xl border border-bakery-200 flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-bakery-500 font-medium">เคยทานชีสพาย</div>
+                        <div id="stat-experience" class="text-xl sm:text-2xl font-title font-bold text-bakery-900">0%</div>
+                    </div>
+                </div>
+
+                <!-- KPI 5 -->
+                <div class="bakery-card p-4 sm:p-5 rounded-3xl border border-bakery-200 flex items-center gap-3 sm:gap-4 col-span-2 sm:col-span-1">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0 shadow-sm">
+                        <i class="fa-solid fa-cake-candles"></i>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-bakery-500 font-medium">กลุ่มอายุหลัก</div>
+                        <div id="stat-top-age" class="text-xs sm:text-sm font-title font-bold text-bakery-900 truncate max-w-[110px]">-</div>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <!-- ข้อ 2.2: ข้อเสนอแนะรสชาติเพิ่มเติม -->
-          <div>
-            <label for="new-flavor" class="block text-sm font-semibold text-choco-800 mb-1.5">
-              คุณอยากให้เราเพิ่มรสชาติเพิ่มไหม แล้วเป็นรสชาติอะไร <span class="text-gray-400 font-normal text-xs">(ไม่บังคับตอบ)</span>
-            </label>
-            <textarea id="new-flavor" name="new_flavor" rows="3" placeholder="ระบุรสชาติที่คุณอยากทาน เช่น มัทฉะลาเต้, มะม่วงหาวมะนาวโห่, ลำไย ฯลฯ" class="w-full px-4 py-3 rounded-2xl border-2 border-cream-200 focus:border-choco-600 focus:outline-none text-sm transition-all bg-cream-50/50"></textarea>
-          </div>
+            <!-- Visual Charts Grid (Chart.js) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Chart 1: Gender -->
+                <div class="bakery-card p-6 rounded-3xl border border-bakery-200 space-y-4">
+                    <div class="flex items-center justify-between border-b border-bakery-100 pb-3">
+                        <h3 class="font-title font-semibold text-bakery-900 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-venus-mars text-bakery-500"></i> สัดส่วนเพศของผู้ตอบ
+                        </h3>
+                    </div>
+                    <div class="h-60 relative">
+                        <canvas id="chart-gender"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Age -->
+                <div class="bakery-card p-6 rounded-3xl border border-bakery-200 space-y-4">
+                    <div class="flex items-center justify-between border-b border-bakery-100 pb-3">
+                        <h3 class="font-title font-semibold text-bakery-900 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-user-group text-bakery-500"></i> ช่วงอายุของผู้ตอบ
+                        </h3>
+                    </div>
+                    <div class="h-60 relative">
+                        <canvas id="chart-age"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Experience -->
+                <div class="bakery-card p-6 rounded-3xl border border-bakery-200 space-y-4">
+                    <div class="flex items-center justify-between border-b border-bakery-100 pb-3">
+                        <h3 class="font-title font-semibold text-bakery-900 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-cookie text-bakery-500"></i> ประสบการณ์ทานชีสพาย
+                        </h3>
+                    </div>
+                    <div class="h-60 relative">
+                        <canvas id="chart-experience"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 4: Flavor Preference -->
+                <div class="bakery-card p-6 rounded-3xl border border-bakery-200 space-y-4">
+                    <div class="flex items-center justify-between border-b border-bakery-100 pb-3">
+                        <h3 class="font-title font-semibold text-bakery-900 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-heart text-amber-500"></i> ความสนใจต่อรสชาติต่างๆ
+                        </h3>
+                    </div>
+                    <div class="h-60 relative">
+                        <canvas id="chart-flavor"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 5: Taste Satisfaction Score Distribution -->
+                <div class="bakery-card p-6 rounded-3xl border border-bakery-200 space-y-4 md:col-span-2">
+                    <div class="flex items-center justify-between border-b border-bakery-100 pb-3">
+                        <h3 class="font-title font-semibold text-bakery-900 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-face-smile-beam text-amber-500"></i> สัดส่วนคะแนนความพึงพอใจในรสชาติ (1 - 5)
+                        </h3>
+                    </div>
+                    <div class="h-60 relative">
+                        <canvas id="chart-satisfaction"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Suggestions List Table -->
+            <div class="bakery-card rounded-3xl p-6 border border-bakery-200 space-y-4">
+                <div class="flex items-center justify-between border-b border-bakery-100 pb-3">
+                    <h3 class="font-title font-semibold text-bakery-900 flex items-center gap-2 text-sm">
+                        <i class="fa-regular fa-lightbulb text-amber-500"></i> ข้อเสนอแนะรสชาติเพิ่มเติมจากลูกค้า
+                    </h3>
+                    <span id="suggestions-count" class="text-xs bg-bakery-100 text-bakery-700 px-3 py-1 rounded-full font-semibold border border-bakery-200">
+                        0 รายการ
+                    </span>
+                </div>
+
+                <div class="overflow-x-auto max-h-72 overflow-y-auto rounded-2xl border border-bakery-200">
+                    <table class="w-full text-left text-xs sm:text-sm">
+                        <thead class="bg-bakery-100 text-bakery-900 font-title sticky top-0 z-10">
+                            <tr>
+                                <th class="p-3.5 font-semibold w-16">ลำดับ</th>
+                                <th class="p-3.5 font-semibold">รสชาติที่อยากให้ทำเพิ่ม</th>
+                                <th class="p-3.5 font-semibold text-right w-32">เวลาที่ส่ง</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suggestions-tbody" class="divide-y divide-bakery-100 bg-white/50">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="w-full py-4 bg-choco-600 hover:bg-choco-700 text-white font-bold rounded-2xl shadow-lg transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 text-base">
-          <span>ส่งแบบประเมิน</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </button>
-      </form>
-    </section>
+    </main>
 
-    <!-- ==================== SECTION: DASHBOARD (ADMIN ONLY) ==================== -->
-    <section id="section-dashboard" class="hidden space-y-6">
-
-      <!-- Admin Top Controls -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-cream-100 p-4 rounded-2xl border border-cream-200">
-        <div>
-          <h2 class="text-xl font-bold text-choco-700">แดชบอร์ดสรุปผลการประเมิน 📊</h2>
-          <p class="text-xs text-choco-600">จัดการและเรียกดูข้อมูลผลตอบรับของลูกค้าแบบ Real-time</p>
+    <!-- Footer -->
+    <footer class="bg-white/80 border-t border-bakery-200 mt-12 py-6 text-center text-xs text-bakery-500">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <span class="font-title font-bold text-bakery-800">DEKAUAN</span>
+                <span>— CHEESECAKE CUP</span>
+            </div>
+            <p>© DEKAUAN Evaluation Survey System. Ready for GitHub Pages.</p>
         </div>
-        <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-          <button onclick="injectDemoData()" class="px-3.5 py-2 bg-white text-choco-700 text-xs font-semibold rounded-xl border border-cream-300 hover:bg-cream-50 transition-all shadow-sm">
-            🎲 เพิ่มข้อมูลตัวอย่าง
-          </button>
-          <button onclick="confirmResetData()" class="px-3.5 py-2 bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold rounded-xl transition-all shadow-sm">
-            🗑️ ล้างข้อมูลทั้งหมด
-          </button>
-        </div>
-      </div>
+    </footer>
 
-      <!-- KPI Summary Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl">📋</div>
-          <div>
-            <p class="text-xs font-medium text-gray-500">ผู้ตอบแบบประเมินทั้งหมด</p>
-            <h4 id="stat-total" class="text-2xl font-bold text-choco-700">0 คน</h4>
-          </div>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl">👑</div>
-          <div>
-            <p class="text-xs font-medium text-gray-500">รสชาติยอดฮิตอันดับ 1</p>
-            <h4 id="stat-top-flavor" class="text-base font-bold text-choco-700">-</h4>
-          </div>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow flex items-center gap-4">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl">💡</div>
-          <div>
-            <p class="text-xs font-medium text-gray-500">ข้อเสนอแนะรสชาติใหม่</p>
-            <h4 id="stat-suggestions-count" class="text-2xl font-bold text-choco-700">0 รายการ</h4>
-          </div>
-        </div>
-      </div>
+    <!-- JavaScript Application Logic -->
+    <script>
+        const STORAGE_KEY = 'dekauan_survey_responses_v2';
+        const ADMIN_PIN = '374817'; // Admin Security PIN Updated
+        let isAdminLoggedIn = false;
 
-      <!-- Charts Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Chart 1: Flavor Preferences -->
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow">
-          <h3 class="font-bold text-choco-700 text-sm mb-4 border-b border-cream-100 pb-2">🍰 รสชาติที่สนใจมากที่สุด</h3>
-          <div class="relative h-64 flex items-center justify-center">
-            <canvas id="chartFlavor"></canvas>
-          </div>
-        </div>
+        let chartGenderInstance = null;
+        let chartAgeInstance = null;
+        let chartExpInstance = null;
+        let chartFlavorInstance = null;
+        let chartSatisfactionInstance = null;
 
-        <!-- Chart 2: Gender Demographics -->
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow">
-          <h3 class="font-bold text-choco-700 text-sm mb-4 border-b border-cream-100 pb-2">👥 สัดส่วนเพศ</h3>
-          <div class="relative h-64 flex items-center justify-center">
-            <canvas id="chartGender"></canvas>
-          </div>
-        </div>
+        // Sample initial datasets for testing
+        const demoResponses = [
+            { gender: 'หญิง', age: '19–22 ปี', experience: 'เคย', satisfaction_score: 5, favorite_flavor: 'บลูเบอร์รี่ชีสพาย 🫐', new_flavor_suggestion: 'อยากให้ทำรสชาเขียวมัทฉะเข้มข้น 🍵', timestamp: '10 นาทีที่แล้ว' },
+            { gender: 'หญิง', age: '23 ปีขึ้นไป', experience: 'เคย', satisfaction_score: 5, favorite_flavor: 'สตรอว์เบอร์รี่ชีสพาย 🍓', new_flavor_suggestion: 'อยากได้รสคาราเมลแมคคาเดเมียกรอบๆ 🌰', timestamp: '20 นาทีที่แล้ว' },
+            { gender: 'ชาย', age: '15–18 ปี', experience: 'ไม่เคย', satisfaction_score: 4, favorite_flavor: 'ช็อกโกแลตชีสพาย 🍫', new_flavor_suggestion: 'รสนูเทลล่าอัลมอนด์ครับ', timestamp: '45 นาทีที่แล้ว' },
+            { gender: 'หญิง', age: '19–22 ปี', experience: 'เคย', satisfaction_score: 4, favorite_flavor: 'โอริโอ้ชีสพาย 🍪', new_flavor_suggestion: 'รสไมโลครันชี่ 🍫', timestamp: '1 ชั่วโมงที่แล้ว' },
+            { gender: 'ไม่ประสงค์ระบุ', age: '23 ปีขึ้นไป', experience: 'เคย', satisfaction_score: 5, favorite_flavor: 'บลูเบอร์รี่ชีสพาย 🫐', new_flavor_suggestion: 'รสเลมอนชีสเคิร์ดเปรี้ยวอมหวาน 🍋', timestamp: '2 ชั่วโมงที่แล้ว' },
+            { gender: 'ชาย', age: '19–22 ปี', experience: 'เคย', satisfaction_score: 3, favorite_flavor: 'ช็อกโกแลตชีสพาย 🍫', new_flavor_suggestion: '', timestamp: '3 ชั่วโมงที่แล้ว' },
+            { gender: 'หญิง', age: 'ต่ำกว่า 15 ปี', experience: 'ไม่เคย', satisfaction_score: 4, favorite_flavor: 'สตรอว์เบอร์รี่ชีสพาย 🍓', new_flavor_suggestion: 'รสชาไทยเฉาก๊วย', timestamp: '4 ชั่วโมงที่แล้ว' },
+            { gender: 'หญิง', age: '23 ปีขึ้นไป', experience: 'เคย', satisfaction_score: 5, favorite_flavor: 'บลูเบอร์รี่ชีสพาย 🫐', new_flavor_suggestion: 'รสทุเรียนหมอนทองครีมชีส', timestamp: '5 ชั่วโมงที่แล้ว' }
+        ];
 
-        <!-- Chart 3: Age Groups -->
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow">
-          <h3 class="font-bold text-choco-700 text-sm mb-4 border-b border-cream-100 pb-2">🎂 ช่วงอายุของผู้ตอบ</h3>
-          <div class="relative h-64 flex items-center justify-center">
-            <canvas id="chartAge"></canvas>
-          </div>
-        </div>
-
-        <!-- Chart 4: Experience -->
-        <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow">
-          <h3 class="font-bold text-choco-700 text-sm mb-4 border-b border-cream-100 pb-2">🥧 ประสบการณ์การทานชีสพาย</h3>
-          <div class="relative h-64 flex items-center justify-center">
-            <canvas id="chartExp"></canvas>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Table: User Suggestions -->
-      <div class="bg-white p-5 rounded-2xl border border-cream-200 custom-shadow">
-        <h3 class="font-bold text-choco-700 text-sm mb-3">💬 ข้อเสนอแนะรสชาติใหม่จากลูกค้า</h3>
-        <div class="overflow-x-auto max-h-60 overflow-y-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="bg-cream-100 text-choco-700 font-semibold border-b border-cream-200">
-                <th class="p-2.5">ลำดับ</th>
-                <th class="p-2.5">รสชาติที่เสนอแนะ</th>
-                <th class="p-2.5">เวลาที่บันทึก</th>
-              </tr>
-            </thead>
-            <tbody id="suggestions-table-body" class="divide-y divide-cream-100">
-              <tr>
-                <td colspan="3" class="text-center p-4 text-gray-400">ยังไม่มีข้อเสนอแนะเพิ่มเติม</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- Modal: Password Auth -->
-  <div id="modal-auth" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 border border-cream-200 transform transition-all scale-100">
-      <div class="text-center">
-        <div class="w-12 h-12 rounded-full bg-cream-100 text-choco-700 text-xl font-bold flex items-center justify-center mx-auto mb-2">🔒</div>
-        <h3 class="font-bold text-choco-700 text-lg">เข้าสู่ระบบ Admin</h3>
-        <p class="text-xs text-gray-500">กรุณากรอกรหัสผ่านเพื่อเข้าดูสรุปผลประเมิน</p>
-      </div>
-      <div>
-        <input type="password" id="admin-pass-input" placeholder="ใส่รหัสผ่าน ( default: 1234 )" class="w-full px-4 py-3 rounded-xl border-2 border-cream-200 focus:border-choco-600 focus:outline-none text-center font-bold text-lg">
-        <p id="auth-error-msg" class="text-xs text-rose-500 text-center mt-1.5 hidden">❌ รหัสผ่านไม่ถูกต้อง โปรดลองอีกครั้ง</p>
-      </div>
-      <div class="flex gap-2">
-        <button onclick="closeAuthModal()" class="w-1/2 py-2.5 rounded-xl border border-cream-300 text-choco-700 text-xs font-semibold hover:bg-cream-100">ยกเลิก</button>
-        <button onclick="verifyPassword()" class="w-1/2 py-2.5 rounded-xl bg-choco-600 hover:bg-choco-700 text-white text-xs font-semibold">ยืนยัน</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Custom Alert/Success -->
-  <div id="modal-alert" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4 border border-cream-200">
-      <div id="alert-icon" class="text-4xl">🎉</div>
-      <h3 id="alert-title" class="font-bold text-choco-700 text-lg">บันทึกข้อมูลสำเร็จ</h3>
-      <p id="alert-body" class="text-xs text-gray-600">ขอบคุณสำหรับความคิดเห็นอันมีค่าของคุณ!</p>
-      <button onclick="closeAlertModal()" class="w-full py-2.5 rounded-xl bg-choco-600 hover:bg-choco-700 text-white text-xs font-semibold">ตกลง</button>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="text-center text-xs text-choco-600/70 py-4">
-    © 2026 DEKAUAN CHEESECAKE CUP. All rights reserved.
-  </footer>
-
-  <!-- Script Code -->
-  <script>
-    const ADMIN_PIN = "1234";
-    let isAdminLoggedIn = false;
-    let chartInstances = {};
-
-    // Initial load
-    document.addEventListener("DOMContentLoaded", () => {
-      updateAdminStateUI();
-    });
-
-    // Form Submit Handler
-    function handleFormSubmit(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-
-      const entry = {
-        gender: formData.get("gender"),
-        age: formData.get("age"),
-        experience: formData.get("experience"),
-        flavor: formData.get("flavor"),
-        new_flavor: formData.get("new_flavor") ? formData.get("new_flavor").trim() : "",
-        timestamp: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
-      };
-
-      saveSurveyData(entry);
-      form.reset();
-
-      // Launch Confetti
-      try {
-        confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
-      } catch(err){}
-
-      showAlertModal("บันทึกแบบประเมินสำเร็จ! 🎉", "ขอบคุณที่ร่วมแบ่งปันความคิดเห็นให้กับ DEKAUAN CHEESECAKE CUP ครับ");
-    }
-
-    // LocalStorage Data Management
-    function getStoredData() {
-      return JSON.parse(localStorage.getItem("dekauan_surveys") || "[]");
-    }
-
-    function saveSurveyData(entry) {
-      const current = getStoredData();
-      current.push(entry);
-      localStorage.setItem("dekauan_surveys", JSON.stringify(current));
-    }
-
-    // Admin Auth Logic
-    function handleAdminToggle() {
-      if (isAdminLoggedIn) {
-        // Logout
-        isAdminLoggedIn = false;
-        updateAdminStateUI();
-        switchTab('survey');
-        showAlertModal("ออกจากระบบเรียบร้อย 🚪", "กลับสู่หน้าแบบประเมินสำหรับผู้ใช้งานทั่วไป");
-      } else {
-        // Open Auth Modal
-        document.getElementById('admin-pass-input').value = "";
-        document.getElementById('auth-error-msg').classList.add('hidden');
-        document.getElementById('modal-auth').classList.remove('hidden');
-      }
-    }
-
-    function closeAuthModal() {
-      document.getElementById('modal-auth').classList.add('hidden');
-    }
-
-    function verifyPassword() {
-      const input = document.getElementById('admin-pass-input').value;
-      if (input === ADMIN_PIN) {
-        isAdminLoggedIn = true;
-        closeAuthModal();
-        updateAdminStateUI();
-        switchTab('dashboard');
-        showAlertModal("เข้าสู่ระบบ Admin สำเร็จ 🔓", "คุณสามารถรับชมสรุปผลและจัดการข้อมูลได้แล้ว");
-      } else {
-        document.getElementById('auth-error-msg').classList.remove('hidden');
-      }
-    }
-
-    function updateAdminStateUI() {
-      const btnText = document.getElementById('admin-btn-text');
-      const navBar = document.getElementById('admin-nav-bar');
-
-      if (isAdminLoggedIn) {
-        btnText.innerText = "ออกจากระบบ Admin (Log out)";
-        navBar.classList.remove('hidden');
-      } else {
-        btnText.innerText = "เข้าสู่ระบบ Admin";
-        navBar.classList.add('hidden');
-      }
-    }
-
-    // Tab Switching
-    function switchTab(tab) {
-      const secSurvey = document.getElementById('section-survey');
-      const secDashboard = document.getElementById('section-dashboard');
-      const btnSurvey = document.getElementById('tab-btn-survey');
-      const btnDashboard = document.getElementById('tab-btn-dashboard');
-
-      if (tab === 'dashboard') {
-        if (!isAdminLoggedIn) {
-          handleAdminToggle();
-          return;
-        }
-        secSurvey.classList.add('hidden');
-        secDashboard.classList.remove('hidden');
-
-        btnDashboard.className = "px-4 py-1.5 rounded-lg text-sm font-semibold transition-all bg-choco-600 text-white shadow-sm";
-        btnSurvey.className = "px-4 py-1.5 rounded-lg text-sm font-semibold transition-all text-choco-700 hover:bg-cream-200";
-
-        renderDashboard();
-      } else {
-        secSurvey.classList.remove('hidden');
-        secDashboard.classList.add('hidden');
-
-        btnSurvey.className = "px-4 py-1.5 rounded-lg text-sm font-semibold transition-all bg-choco-600 text-white shadow-sm";
-        btnDashboard.className = "px-4 py-1.5 rounded-lg text-sm font-semibold transition-all text-choco-700 hover:bg-cream-200";
-      }
-    }
-
-    // Render Dashboard & Charts
-    function renderDashboard() {
-      const data = getStoredData();
-
-      // Update KPI
-      document.getElementById('stat-total').innerText = `${data.length} คน`;
-
-      // Counting Logic
-      const counts = {
-        flavor: { "บลูเบอร์รี่ชีสพาย 🫐": 0, "สตรอว์เบอร์รี่ชีสพาย 🍓": 0, "ช็อกโกแลตชีสพาย 🍫": 0, "โอริโอ้ชีสพาย 🍪": 0 },
-        gender: { "ชาย": 0, "หญิง": 0, "ไม่ประสงค์ระบุ": 0 },
-        age: { "ต่ำกว่า 15 ปี": 0, "15–18 ปี": 0, "19–22 ปี": 0, "23 ปีขึ้นไป": 0 },
-        experience: { "เคย": 0, "ไม่เคย": 0 }
-      };
-
-      const suggestions = [];
-
-      data.forEach(item => {
-        if (counts.flavor[item.flavor] !== undefined) counts.flavor[item.flavor]++;
-        if (counts.gender[item.gender] !== undefined) counts.gender[item.gender]++;
-        if (counts.age[item.age] !== undefined) counts.age[item.age]++;
-        if (counts.experience[item.experience] !== undefined) counts.experience[item.experience]++;
-        if (item.new_flavor) suggestions.push({ flavor: item.new_flavor, time: item.timestamp });
-      });
-
-      // Top Flavor
-      let topFlavor = "-";
-      let maxCount = -1;
-      Object.entries(counts.flavor).forEach(([key, val]) => {
-        if (val > maxCount && val > 0) {
-          maxCount = val;
-          topFlavor = key;
-        }
-      });
-      document.getElementById('stat-top-flavor').innerText = topFlavor;
-      document.getElementById('stat-suggestions-count').innerText = `${suggestions.length} รายการ`;
-
-      // Render Table
-      const tbody = document.getElementById('suggestions-table-body');
-      if (suggestions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center p-4 text-gray-400">ยังไม่มีข้อเสนอแนะเพิ่มเติม</td></tr>`;
-      } else {
-        tbody.innerHTML = suggestions.map((s, idx) => `
-          <tr class="hover:bg-cream-50 transition-colors">
-            <td class="p-2.5 font-medium text-gray-400">${idx + 1}</td>
-            <td class="p-2.5 font-semibold text-choco-700">${escapeHtml(s.flavor)}</td>
-            <td class="p-2.5 text-gray-500">${s.time || '-'}</td>
-          </tr>
-        `).join('');
-      }
-
-      // Draw Charts
-      drawChart('chartFlavor', 'doughnut', Object.keys(counts.flavor), Object.values(counts.flavor), ['#4C6EF5', '#FF6B6B', '#862E9C', '#495057']);
-      drawChart('chartGender', 'pie', Object.keys(counts.gender), Object.values(counts.gender), ['#339AF0', '#FCC2D7', '#ADB5BD']);
-      drawChart('chartAge', 'bar', Object.keys(counts.age), Object.values(counts.age), ['#FCC419', '#FF922B', '#FF6B6B', '#CC5DE8']);
-      drawChart('chartExp', 'pie', Object.keys(counts.experience), Object.values(counts.experience), ['#51CF66', '#FF8787']);
-    }
-
-    function drawChart(canvasId, type, labels, data, colors) {
-      if (chartInstances[canvasId]) {
-        chartInstances[canvasId].destroy();
-      }
-
-      const ctx = document.getElementById(canvasId).getContext('2d');
-      chartInstances[canvasId] = new Chart(ctx, {
-        type: type,
-        data: {
-          labels: labels,
-          datasets: [{
-            data: data,
-            backgroundColor: colors,
-            borderWidth: 2,
-            borderColor: '#ffffff'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { font: { family: 'Prompt', size: 11 } }
+        // Init on DOM Content Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(demoResponses));
             }
-          }
+        });
+
+        // Tab Switching Function with Protection
+        function switchTab(tabName) {
+            if (tabName === 'dashboard' && !isAdminLoggedIn) {
+                requestAdminAccess();
+                return;
+            }
+
+            const surveyBtn = document.getElementById('tab-survey-btn');
+            const dashboardBtn = document.getElementById('tab-dashboard-btn');
+            const surveySec = document.getElementById('survey-section');
+            const dashboardSec = document.getElementById('dashboard-section');
+
+            if (tabName === 'survey') {
+                surveySec.classList.remove('hidden');
+                dashboardSec.classList.add('hidden');
+
+                surveyBtn.classList.add('tab-active');
+                dashboardBtn.classList.remove('tab-active');
+            } else {
+                surveySec.classList.add('hidden');
+                dashboardSec.classList.remove('hidden');
+
+                dashboardBtn.classList.add('tab-active');
+                surveyBtn.classList.remove('tab-active');
+
+                renderDashboard();
+            }
         }
-      });
-    }
 
-    // Demo Data Generator
-    function injectDemoData() {
-      const demoSamples = [
-        { gender: "หญิง", age: "19–22 ปี", experience: "เคย", flavor: "สตรอว์เบอร์รี่ชีสพาย 🍓", new_flavor: "ชาไทยเฉาก๊วย", timestamp: "10:15" },
-        { gender: "ชาย", age: "23 ปีขึ้นไป", experience: "เคย", flavor: "บลูเบอร์รี่ชีสพาย 🫐", new_flavor: "มัทฉะเข้มข้น", timestamp: "10:30" },
-        { gender: "หญิง", age: "15–18 ปี", experience: "เคย", flavor: "โอริโอ้ชีสพาย 🍪", new_flavor: "คาราเมลพีนัทเบัตเตอร์", timestamp: "11:05" },
-        { gender: "ไม่ประสงค์ระบุ", age: "19–22 ปี", experience: "ไม่เคย", flavor: "ช็อกโกแลตชีสพาย 🍫", new_flavor: "", timestamp: "11:20" },
-        { gender: "หญิง", age: "23 ปีขึ้นไป", experience: "เคย", flavor: "บลูเบอร์รี่ชีสพาย 🫐", new_flavor: "มะม่วงเสาวรส", timestamp: "12:00" },
-      ];
+        // Admin Access Authentication Modal
+        function requestAdminAccess() {
+            if (isAdminLoggedIn) {
+                switchTab('dashboard');
+                return;
+            }
 
-      const current = getStoredData();
-      const updated = current.concat(demoSamples);
-      localStorage.setItem("dekauan_surveys", JSON.stringify(updated));
-      renderDashboard();
-      showAlertModal("สร้างข้อมูลตัวอย่างสำเร็จ 🎲", "เพิ่มข้อมูลสถิติจำลอง 5 รายการเรียบร้อยแล้ว");
-    }
+            Swal.fire({
+                title: 'เข้าสู่ระบบผู้ดูแลระบบ 🔒',
+                text: 'กรุณากรอกรหัสผ่านเพื่อเข้าดูสรุปผลการประเมิน',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    placeholder: 'กรอกรหัสผ่าน (PIN)'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'ยืนยันรหัสผ่าน 🔑',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#7A5437',
+                cancelButtonColor: '#9B7453',
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (result.value === ADMIN_PIN) {
+                        isAdminLoggedIn = true;
+                        updateAdminUI();
+                        switchTab('dashboard');
 
-    // Reset Data Logic
-    function confirmResetData() {
-      localStorage.removeItem("dekauan_surveys");
-      renderDashboard();
-      showAlertModal("ล้างข้อมูลสำเร็จ 🗑️", "ข้อมูลการตอบแบบประเมินทั้งหมดถูกรีเซ็ตเรียบร้อยแล้ว");
-    }
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ปลดล็อกสิทธิ์ Admin สำเร็จ! 🎉',
+                            text: 'ยินดีต้อนรับเข้าสู่แดชบอร์ดสรุปผลการประเมิน',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: '#FFFBF7',
+                            borderRadius: '24px'
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'รหัสผ่านไม่ถูกต้อง! ❌',
+                            text: 'รหัสผ่านที่คุณระบุไม่ถูกต้อง กรุณาลองกรอกใหม่อีกครั้ง',
+                            confirmButtonColor: '#E53935',
+                            confirmButtonText: 'ลองใหม่อีกครั้ง',
+                            background: '#FFFBF7',
+                            borderRadius: '24px'
+                        }).then(() => {
+                            // Automatically re-prompt for password
+                            requestAdminAccess();
+                        });
+                    }
+                }
+            });
+        }
 
-    // Alert Modal Helpers
-    function showAlertModal(title, body) {
-      document.getElementById('alert-title').innerText = title;
-      document.getElementById('alert-body').innerText = body;
-      document.getElementById('modal-alert').classList.remove('hidden');
-    }
+        // Update Navigation UI based on Admin Auth State
+        function updateAdminUI() {
+            const adminIcon = document.getElementById('admin-icon');
+            const adminText = document.getElementById('tab-dashboard-text');
+            const logoutBtn = document.getElementById('logout-admin-btn');
 
-    function closeAlertModal() {
-      document.getElementById('modal-alert').classList.add('hidden');
-    }
+            if (isAdminLoggedIn) {
+                adminIcon.className = 'fa-solid fa-chart-pie text-emerald-600';
+                adminText.innerText = 'สรุปผล (Admin)';
+                logoutBtn.classList.remove('hidden');
+            } else {
+                adminIcon.className = 'fa-solid fa-lock text-amber-600';
+                adminText.innerText = 'สำหรับผู้ดูแลระบบ';
+                logoutBtn.classList.add('hidden');
+            }
+        }
 
-    function escapeHtml(text) {
-      return text.replace(/[&<"']/g, function(m) {
-        return { '&': '&amp;', '<': '&lt;', '"': '&quot;', "'": '&#039;' }[m];
-      });
-    }
-  </script>
+        // Admin Logout
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            updateAdminUI();
+            switchTab('survey');
+
+            Swal.fire({
+                icon: 'info',
+                title: 'ออกจากระบบแล้ว 🔒',
+                text: 'สลับกลับสู่หน้าแบบประเมินสำหรับผู้ตอบทั่วไปเรียบร้อย',
+                timer: 1500,
+                showConfirmButton: false,
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            });
+        }
+
+        // Form Submission Handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const responseObj = {
+                gender: formData.get('gender'),
+                age: formData.get('age'),
+                experience: formData.get('experience'),
+                satisfaction_score: Number(formData.get('satisfaction_score')) || 5,
+                favorite_flavor: formData.get('favorite_flavor'),
+                new_flavor_suggestion: formData.get('new_flavor_suggestion')?.trim() || '',
+                timestamp: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.'
+            };
+
+            // Retrieve and Save Data
+            const currentData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            currentData.unshift(responseObj);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentData));
+
+            // Confetti animation
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 90,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            // Beautiful SweetAlert Popup - keeps public users on survey view
+            Swal.fire({
+                title: 'ขอบคุณสำหรับข้อมูล!',
+                text: 'เราได้รับข้อมูลการประเมินแบรนด์ DEKAUAN ของคุณเรียบร้อยแล้ว 🍰',
+                icon: 'success',
+                confirmButtonText: 'เสร็จสิ้น 💖',
+                confirmButtonColor: '#7A5437',
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            }).then(() => {
+                form.reset();
+                switchTab('survey');
+            });
+        }
+
+        // Dashboard Data Aggregation and Visualization Render
+        function renderDashboard() {
+            const responses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+            // Update Total KPI
+            document.getElementById('stat-total').innerText = responses.length;
+
+            if (responses.length === 0) {
+                document.getElementById('stat-avg-score').innerText = '0.0 / 5';
+                document.getElementById('stat-top-flavor').innerText = '-';
+                document.getElementById('stat-experience').innerText = '0%';
+                document.getElementById('stat-top-age').innerText = '-';
+                
+                renderCharts({
+                    gender: { 'ชาย': 0, 'หญิง': 0, 'ไม่ประสงค์ระบุ': 0 },
+                    age: { 'ต่ำกว่า 15 ปี': 0, '15–18 ปี': 0, '19–22 ปี': 0, '23 ปีขึ้นไป': 0 },
+                    experience: { 'เคย': 0, 'ไม่เคย': 0 },
+                    flavor: { 'บลูเบอร์รี่ชีสพาย 🫐': 0, 'สตรอว์เบอร์รี่ชีสพาย 🍓': 0, 'ช็อกโกแลตชีสพาย 🍫': 0, 'โอริโอ้ชีสพาย 🍪': 0 },
+                    satisfaction: { '1 (😡)': 0, '2 (😕)': 0, '3 (😐)': 0, '4 (🙂)': 0, '5 (😍)': 0 }
+                });
+                renderSuggestionsTable([]);
+                return;
+            }
+
+            // Data Counter Objects
+            const genderCounts = { 'ชาย': 0, 'หญิง': 0, 'ไม่ประสงค์ระบุ': 0 };
+            const ageCounts = { 'ต่ำกว่า 15 ปี': 0, '15–18 ปี': 0, '19–22 ปี': 0, '23 ปีขึ้นไป': 0 };
+            const expCounts = { 'เคย': 0, 'ไม่เคย': 0 };
+            const flavorCounts = {
+                'บลูเบอร์รี่ชีสพาย 🫐': 0,
+                'สตรอว์เบอร์รี่ชีสพาย 🍓': 0,
+                'ช็อกโกแลตชีสพาย 🍫': 0,
+                'โอริโอ้ชีสพาย 🍪': 0
+            };
+            const satisfactionCounts = { '1 (😡)': 0, '2 (😕)': 0, '3 (😐)': 0, '4 (🙂)': 0, '5 (😍)': 0 };
+
+            let totalSatisfactionSum = 0;
+            const suggestions = [];
+
+            responses.forEach(r => {
+                if (genderCounts.hasOwnProperty(r.gender)) genderCounts[r.gender]++;
+                if (ageCounts.hasOwnProperty(r.age)) ageCounts[r.age]++;
+                if (expCounts.hasOwnProperty(r.experience)) expCounts[r.experience]++;
+                if (flavorCounts.hasOwnProperty(r.favorite_flavor)) flavorCounts[r.favorite_flavor]++;
+
+                const score = Number(r.satisfaction_score) || 5;
+                totalSatisfactionSum += score;
+                const scoreKey = `${score} (${score === 1 ? '😡' : score === 2 ? '😕' : score === 3 ? '😐' : score === 4 ? '🙂' : '😍'})`;
+                if (satisfactionCounts.hasOwnProperty(scoreKey)) satisfactionCounts[scoreKey]++;
+
+                if (r.new_flavor_suggestion) {
+                    suggestions.push({
+                        text: r.new_flavor_suggestion,
+                        time: r.timestamp || 'เมื่อสักครู่'
+                    });
+                }
+            });
+
+            // Average Score Calculation
+            const avgScore = (totalSatisfactionSum / responses.length).toFixed(1);
+            document.getElementById('stat-avg-score').innerText = `${avgScore} / 5 ⭐`;
+
+            // Top Flavor Calculation
+            let topFlavor = '-';
+            let maxFlavorCount = -1;
+            Object.entries(flavorCounts).forEach(([flavor, count]) => {
+                if (count > maxFlavorCount) {
+                    maxFlavorCount = count;
+                    topFlavor = flavor;
+                }
+            });
+            document.getElementById('stat-top-flavor').innerText = maxFlavorCount > 0 ? topFlavor.split(' ')[0] : '-';
+
+            // Experience Ratio
+            const expRatio = Math.round((expCounts['เคย'] / responses.length) * 100);
+            document.getElementById('stat-experience').innerText = expRatio + '%';
+
+            // Top Age Group Calculation
+            let topAge = '-';
+            let maxAgeCount = -1;
+            Object.entries(ageCounts).forEach(([ageGroup, count]) => {
+                if (count > maxAgeCount) {
+                    maxAgeCount = count;
+                    topAge = ageGroup;
+                }
+            });
+            document.getElementById('stat-top-age').innerText = maxAgeCount > 0 ? topAge : '-';
+
+            // Render Charts and Table
+            renderCharts({ gender: genderCounts, age: ageCounts, experience: expCounts, flavor: flavorCounts, satisfaction: satisfactionCounts });
+            renderSuggestionsTable(suggestions);
+        }
+
+        // Render Chart.js
+        function renderCharts(data) {
+            const colors = {
+                blue: '#42A5F5',
+                pink: '#EC407A',
+                purple: '#AB47BC',
+                amber: '#F4B740',
+                emerald: '#66BB6A',
+                strawberry: '#E53935',
+                chocolate: '#7A5437',
+                oreo: '#37474F'
+            };
+
+            // 1. Gender Chart (Doughnut)
+            if (chartGenderInstance) chartGenderInstance.destroy();
+            const ctxGender = document.getElementById('chart-gender').getContext('2d');
+            chartGenderInstance = new Chart(ctxGender, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data.gender),
+                    datasets: [{
+                        data: Object.values(data.gender),
+                        backgroundColor: [colors.blue, colors.pink, colors.purple],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            // 2. Age Chart (Bar)
+            if (chartAgeInstance) chartAgeInstance.destroy();
+            const ctxAge = document.getElementById('chart-age').getContext('2d');
+            chartAgeInstance = new Chart(ctxAge, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.age),
+                    datasets: [{
+                        label: 'จำนวนคน',
+                        data: Object.values(data.age),
+                        backgroundColor: colors.amber,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+
+            // 3. Experience Chart (Pie)
+            if (chartExpInstance) chartExpInstance.destroy();
+            const ctxExp = document.getElementById('chart-experience').getContext('2d');
+            chartExpInstance = new Chart(ctxExp, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.experience),
+                    datasets: [{
+                        data: Object.values(data.experience),
+                        backgroundColor: [colors.emerald, '#FB8C00'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            // 4. Flavor Preference Chart (Horizontal Bar)
+            if (chartFlavorInstance) chartFlavorInstance.destroy();
+            const ctxFlavor = document.getElementById('chart-flavor').getContext('2d');
+            chartFlavorInstance = new Chart(ctxFlavor, {
+                type: 'bar',
+                data: {
+                    labels: ['บลูเบอร์รี่ 🫐', 'สตรอว์เบอร์รี่ 🍓', 'ช็อกโกแลต 🍫', 'โอริโอ้ 🍪'],
+                    datasets: [{
+                        label: 'จำนวนที่สนใจ',
+                        data: Object.values(data.flavor),
+                        backgroundColor: [colors.purple, colors.strawberry, colors.chocolate, colors.oreo],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+
+            // 5. Taste Satisfaction Rating Distribution (Bar Chart)
+            if (chartSatisfactionInstance) chartSatisfactionInstance.destroy();
+            const ctxSatisfaction = document.getElementById('chart-satisfaction').getContext('2d');
+            chartSatisfactionInstance = new Chart(ctxSatisfaction, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.satisfaction),
+                    datasets: [{
+                        label: 'จำนวนคน',
+                        data: Object.values(data.satisfaction),
+                        backgroundColor: ['#EF4444', '#F97316', '#EAB308', '#84CC16', '#10B981'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        // Suggestions Table Population
+        function renderSuggestionsTable(list) {
+            const tbody = document.getElementById('suggestions-tbody');
+            const countBadge = document.getElementById('suggestions-count');
+            countBadge.innerText = list.length + ' รายการ';
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="text-center p-6 text-bakery-400 font-light">ยังไม่มีข้อเสนอแนะรสชาติเพิ่มเติมในขณะนี้</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = list.map((item, idx) => `
+                <tr class="hover:bg-bakery-100/40 transition-colors">
+                    <td class="p-3.5 text-bakery-400 font-mono font-semibold">${idx + 1}</td>
+                    <td class="p-3.5 font-medium text-bakery-900">${escapeHtml(item.text)}</td>
+                    <td class="p-3.5 text-right text-xs text-bakery-400 font-mono">${item.time}</td>
+                </tr>
+            `).join('');
+        }
+
+        // FULLY WORKING RESET DATA FUNCTIONALITY (No Native Browser Confirm/Alert)
+        function confirmResetData() {
+            Swal.fire({
+                title: 'ยืนยันการล้างข้อมูล?',
+                text: "ข้อมูลผลการประเมินทั้งหมดจะถูกลบออก และไม่สามารถกู้คืนได้!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#E53935',
+                cancelButtonColor: '#7A5437',
+                confirmButtonText: 'ล้างข้อมูลทั้งหมด',
+                cancelButtonText: 'ยกเลิก',
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Clear LocalStorage
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+                    
+                    // Re-render Dashboard
+                    renderDashboard();
+
+                    Swal.fire({
+                        title: 'ล้างข้อมูลเรียบร้อยแล้ว!',
+                        text: 'ระบบได้ทำการรีเซ็ตข้อมูลผลการประเมินเป็น 0 เรียบร้อย',
+                        icon: 'success',
+                        confirmButtonColor: '#7A5437',
+                        background: '#FFFBF7',
+                        borderRadius: '24px'
+                    });
+                }
+            });
+        }
+
+        // Load Demo Data Function
+        function loadDemoData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(demoResponses));
+            renderDashboard();
+
+            Swal.fire({
+                title: 'โหลดข้อมูลตัวอย่างสำเร็จ!',
+                text: 'จำลองข้อมูลตอบแบบประเมินเรียบร้อยแล้ว',
+                icon: 'info',
+                timer: 1500,
+                showConfirmButton: false,
+                background: '#FFFBF7',
+                borderRadius: '24px'
+            });
+        }
+
+        // Helper function to escape HTML special chars
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+    </script>
 </body>
 </html>
